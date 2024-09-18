@@ -1,8 +1,7 @@
-import { Section } from '@/components/user/Account';
+import { Section } from '@/components/user/Account/Budget';
 import { Nav } from '@/components/user/Account/Dashboard';
 
-const Account: React.FC = () => {
-  
+const Budget: React.FC = () => {
   return (
     <div className="w-screen h-screen flex  bg-slate-50 p-12">
       <Nav />
@@ -11,4 +10,4 @@ const Account: React.FC = () => {
   );
 };
 
-export default Account;
+export default Budget;

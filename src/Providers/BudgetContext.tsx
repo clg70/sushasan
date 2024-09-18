@@ -23,10 +23,14 @@ const BudgetContextProvider: React.FC<{ children: React.ReactNode }> = ({
     if (!cookie.token) return;
 
     try {
-      const user = await backend.getCurrentBudget(
-        String(new Date().getFullYear()),
-      );
-      return user[0];
+      const u = await backend.getUser(String(cookie.token));
+      if (u[0]?.role == 'admin') {
+        const user = await backend.getCurrentBudget(
+          String(new Date().getFullYear()),
+        );
+        return user[0];
+      }
+      return u[0]?.budgets[0][1];
     } catch (e) {
       console.error('Error fetching user data:', e);
       throw new Error('Failed to fetch user data');

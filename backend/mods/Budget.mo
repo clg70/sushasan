@@ -85,7 +85,7 @@ module {
 
                 var transactions = HashMap.fromIter<Text, Types.Transaction>((too.transactions).vals(), 0, Text.equal, Text.hash);
 
-                let newTransactions : Types.Transaction = {
+                var newTransactions : Types.Transaction = {
                   id = await HashIt.hash(id);
                   from = from;
                   to = too;
@@ -93,6 +93,7 @@ module {
                   purpose = "Budget Allocation.";
                   date = date;
                 };
+
                 transactions.put(newTransactions.id, newTransactions);
 
                 let updatedTo : Types.User = {

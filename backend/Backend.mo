@@ -1,6 +1,7 @@
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
+import Debug "mo:base/Debug";
 import Types "Types";
 import User "mods/User";
 import Budget "mods/Budget";
