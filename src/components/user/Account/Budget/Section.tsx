@@ -7,6 +7,7 @@ import backend from '@/declarations/export';
 import { Card } from '../Dashboard';
 import TransactionFlow from '../../TransactionFlow';
 import { useUser } from '@/Providers/UserContext';
+import Visulaize from './Visualize';
 const Section: React.FC = () => {
   const { cookie } = useAuth();
   const [amount, setAmount] = useState<number>(0);
@@ -80,9 +81,10 @@ const Section: React.FC = () => {
           </div>
         </div>
       )}
+
       {user?.role == 'admin' && (
-        <div>
-          <TransactionFlow />
+        <div className='flex justify-center items-center h-80' >
+          <Visulaize />
         </div>
       )}
     </div>

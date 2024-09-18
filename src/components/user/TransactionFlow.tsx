@@ -132,7 +132,7 @@ const TransactionFlow: React.FC = () => {
 
   // Render the tree
   return (
-    <div id="treeWrapper" className="h-80 top-16">
+    <div id="treeWrapper" className="h-screen w-screen">
       <Tree
         data={orgChart}
         orientation="horizontal"
