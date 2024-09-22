@@ -2,11 +2,11 @@ import Types "../Types";
 import HashIt "HashIt";
 
 module {
-  public func register(users : Types.Users, username : Text, password : Text, name : Text, nid : Text, czid : Text, role : Text, createdAt : Text) : async Types.User {
+  public func register(users : Types.Users, username : Text, password : Text, name : Text, nid : Text, czid : Text, role : Text, createdAt : Text) : async ?Types.User {
     let hashedUsername = await HashIt.hash(username);
     switch (users.get(hashedUsername)) {
-      case (?value) {
-        return value;
+      case (?_) {
+        return null;
       };
       case (null) {
         let newUser : Types.User = {
@@ -20,9 +20,10 @@ module {
           balance = 0;
           transactions = [];
           budgets = [];
+          properties = [];
           createdAt = createdAt;
         };
-        return newUser;
+        return ?newUser;
       };
     };
   };
@@ -70,6 +71,7 @@ module {
           balance = 0;
           transactions = [];
           budgets = [];
+          properties = [];
           createdAt = createdAt;
         };
         return newUser;

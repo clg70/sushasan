@@ -2,7 +2,6 @@ import Types "../Types";
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
-import Debug "mo:base/Debug";
 
 import HashIt "HashIt";
 module {
@@ -11,7 +10,7 @@ module {
     budget : Types.Budget;
   };
 
-  public func add(users : Types.Users, token : Text, fiscalYear : Text, totalAmt : Nat, createdAt : Text) : async ?Res2 {
+  public func add(users : Types.Users, token : Text, fiscalYear : Text, totalAmt : Int, createdAt : Text) : async ?Res2 {
     switch (users.get(token)) {
       case (?user) {
         if (user.role == "admin") {
@@ -22,7 +21,8 @@ module {
 
             createdAt = createdAt;
           };
-
+          var preBudget = HashMap.fromIter<Text, Types.Budget>((user.budgets).vals(), 0, Text.equal, Text.hash);
+          preBudget.put(fiscalYear, newBudget);
           let updatedUser : Types.User = {
             id = user.id;
             username = user.username;
@@ -33,7 +33,8 @@ module {
             role = user.role;
             balance = user.balance + totalAmt;
             transactions = user.transactions;
-            budgets = user.budgets;
+            budgets = Iter.toArray(preBudget.entries());
+            properties = user.properties;
             createdAt = user.createdAt;
 
           };
@@ -65,7 +66,7 @@ module {
     from : Types.User;
   };
 
-  public func allocateBudget(budgets : Types.Budgets, users : Types.Users, from : Text, to : Text, amount : Nat, fiscalYear : Text, date : Text, id : Text) : async ?Response {
+  public func allocateBudget(budgets : Types.Budgets, users : Types.Users, from : Text, to : Text, amount : Int, fiscalYear : Text, date : Text, id : Text) : async ?Response {
     switch (users.get(from)) {
       case (?from) {
         switch (users.get(to)) {
@@ -107,6 +108,7 @@ module {
                   balance = too.balance + amount;
                   transactions = Iter.toArray(transactions.entries());
                   budgets = Iter.toArray(preBudget.entries());
+                  properties = too.properties;
                   createdAt = too.createdAt;
                 };
 
@@ -139,10 +141,10 @@ module {
                       balance = from.balance;
                       transactions = Iter.toArray(transactions.entries());
                       budgets = Iter.toArray(preBudget.entries());
+                      properties = from.properties;
                       createdAt = from.createdAt;
                     };
 
-                    // Debug.print(debug_show (updatedFrom.transactions));
 
                     let response : Response = {
                       to = updatedTo;
@@ -190,6 +192,7 @@ module {
                   balance = too.balance + amount;
                   transactions = Iter.toArray(transactions.entries());
                   budgets = Iter.toArray(preBudget.entries());
+                  properties = too.properties;
                   createdAt = too.createdAt;
                 };
 
@@ -222,10 +225,10 @@ module {
                       balance = from.balance - amount;
                       transactions = Iter.toArray(transactions.entries());
                       budgets = Iter.toArray(preBudget.entries());
+                      properties = from.properties;
                       createdAt = from.createdAt;
                     };
 
-                    // Debug.print(debug_show (updatedFrom.transactions));
 
                     let response : Response = {
                       to = updatedTo;
@@ -256,7 +259,7 @@ module {
     transaction : Types.Transaction;
   };
 
-  public func budgetToProvince(users : Types.Users, to : Text, from : Text, amount : Nat, purpose : Text, fiscalYear : Text, date : Text, id : Text) : async ?Res1 {
+  public func budgetToProvince(users : Types.Users, to : Text, from : Text, amount : Int, purpose : Text, fiscalYear : Text, date : Text, id : Text) : async ?Res1 {
     switch (users.get(from)) {
       case (?lender) {
         switch (users.get(to)) {
@@ -315,6 +318,7 @@ module {
                         balance = lender.balance - amount;
                         transactions = Iter.toArray(lTransactions.entries());
                         budgets = Iter.toArray(lBudget.entries());
+                        properties = lender.properties;
                         createdAt = lender.createdAt;
                       };
 
@@ -329,6 +333,7 @@ module {
                         balance = borrower.balance + amount;
                         transactions = Iter.toArray(bTransactions.entries());
                         budgets = Iter.toArray(bBudget.entries());
+                        properties = borrower.properties;
                         createdAt = borrower.createdAt;
                       };
 
@@ -386,6 +391,7 @@ module {
                         balance = lender.balance - amount;
                         transactions = Iter.toArray(lTransactions.entries());
                         budgets = Iter.toArray(lBudget.entries());
+                        properties = lender.properties;
                         createdAt = lender.createdAt;
                       };
 
@@ -400,6 +406,7 @@ module {
                         balance = borrower.balance + amount;
                         transactions = Iter.toArray(bTransactions.entries());
                         budgets = Iter.toArray(bBudget.entries());
+                        properties = borrower.properties;
                         createdAt = borrower.createdAt;
                       };
 

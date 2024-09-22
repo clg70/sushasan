@@ -7,6 +7,10 @@ import { Button } from '@/components/ui/button';
 import backend from '@/declarations/export';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { Actor, HttpAgent } from '@dfinity/agent';
+import { useEffect } from 'react';
+import { canisterId, idlFactory } from '@/declarations/backend';
+
 const schema = z.object({
   userid: z.string().min(1, {
     message: 'User ID is required!',
@@ -18,6 +22,32 @@ const schema = z.object({
 
 type formField = z.infer<typeof schema>;
 const Login: React.FC = () => {
+  const agent = new HttpAgent({ host: 'http://127.0.0.1:4943' });
+  let host = 'http://127.0.0.1:4943';
+  useEffect(() => {
+    const initializeActor = async () => {
+      try {
+        // Fetch the root key for local development
+        if (host === 'http://127.0.0.1:4943') {
+          await agent.fetchRootKey();
+        }
+
+        const actor = Actor.createActor(idlFactory, {
+          agent,
+          canisterId,
+        });
+
+        const user = await actor.getCurrentBudget(
+          String(new Date().getFullYear()),
+        );
+        console.log('Current Budget:', user);
+      } catch (error) {
+        console.error('Error initializing actor:', error);
+      }
+    };
+
+    initializeActor();
+  }, []);
   const [_, setCookie] = useCookies(['token']);
   const navigate = useNavigate();
   const {
