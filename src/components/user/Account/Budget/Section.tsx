@@ -38,6 +38,7 @@ const Section: React.FC = () => {
 
   return (
     <div className="w-full bg-white rounded-lg px-12 py-6">
+      
       <h1 className="font-bold text-slate-900 text-xl pl-2">
         {budget && <div>{`Budget ${new Date().getFullYear()}`}</div>}
       </h1>
@@ -67,6 +68,8 @@ const Section: React.FC = () => {
         </div>
       ) : (
         <div>
+          {user?.role!=='admin' && <p className='text-center text-slate-500'>No Budget Found available for this year.</p>}
+        {user?.role=='admin' && <div>
           <h1 className="font-bold text-xl">
             Initialize Budget for {new Date().getFullYear()}
           </h1>
@@ -79,6 +82,7 @@ const Section: React.FC = () => {
               {isLoading ? '...' : 'Initialize'}
             </Button>
           </div>
+        </div>}
         </div>
       )}
 

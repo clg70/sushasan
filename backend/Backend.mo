@@ -117,6 +117,17 @@ actor class Backend() {
   };
 
   public func propertyTransaction(owner : Text, buyer : Text, amount : Int, createdAt : Text, regNo : Text, tid : Text) : async Text {
+    
+
+    if (Text.size(owner) == 0 or Text.size(buyer) == 0 or Text.size(regNo) == 0 or Text.size(tid) == 0) {
+      return "400"; 
+    };
+
+    if (amount <= 0) {
+      return "400"; 
+    };
+
+  
     let response = await Property.propertyTransaction(users, properties, owner, buyer, amount, createdAt, regNo, tid);
 
     switch (response) {

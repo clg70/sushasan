@@ -17,39 +17,74 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { useUser } from '@/Providers/UserContext';
+import { Transaction } from '@/declarations/backend/backend.did';
 
 export const description = 'A multiple bar chart';
 
-const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 },
-];
-
 const chartConfig = {
   desktop: {
-    label: 'Desktop',
+    label: 'Transaction',
     color: 'hsl(var(--chart-1))',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig;
 
 export function BarGraph() {
+  const { user, isLoading } = useUser();
+  if (isLoading) return <div>Loading..</div>;
+
+  const structureData = () => {
+    const schema = [
+      { month: 'Jan', amount: 0 },
+      { month: 'Feb', amount: 0 },
+      { month: 'Mar', amount: 0 },
+      { month: 'Apr', amount: 0 },
+      { month: 'May', amount: 0 },
+      { month: 'Jun', amount: 0 },
+      { month: 'Jul', amount: 0 },
+      { month: 'Aug', amount: 0 },
+      { month: 'Sep', amount: 0 },
+      { month: 'Oct', amount: 0 },
+      { month: 'Nov', amount: 0 },
+      { month: 'Dec', amount: 0 },
+    ];
+
+    let temp: Transaction[] = [];
+    user?.transactions.map((transaction) => {
+      temp.push(transaction[1]);
+    });
+
+    temp.forEach((transaction) => {
+      const transactionMonth = new Date(transaction.date).toLocaleDateString(
+        'default',
+        {
+          month: 'short',
+        },
+      );
+
+      schema.forEach((m) => {
+        if (m.month === transactionMonth) {
+          m.amount += Number(transaction.amount);
+        }
+      });
+    });
+
+    return schema;
+  };
+
+  const data = structureData();
+
   return (
-    <Card className="w-[450px]">
+    <Card >
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Bar Chart - Monthly Transactions</CardTitle>
+        <CardDescription>
+          Showing transactions for each month in 2024.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer className="h-56" config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -62,8 +97,7 @@ export function BarGraph() {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar dataKey="amount" fill="var(--color-desktop)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
@@ -72,7 +106,7 @@ export function BarGraph() {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total transactions for the last 12 months
         </div>
       </CardFooter>
     </Card>

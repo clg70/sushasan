@@ -4,7 +4,7 @@ import { Nav } from '@/components/user/Account/Dashboard';
 const Budget: React.FC = () => {
   return (
     <div className="w-screen h-screen flex  bg-slate-50 p-12">
-      <Nav />
+      <Nav selected='budget' />
       <Section />
     </div>
   );

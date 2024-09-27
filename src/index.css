@@ -12,3 +12,17 @@
 * {
   font-family: 'Inter', sans-serif;
 }
+
+/* Add this to your global CSS file (e.g., styles/globals.css or index.css) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #6d6d6d; /* Color of the scrollbar */
+  border-radius: 9999px; /* Roundness of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0; /* Background of the scrollbar track */
+}

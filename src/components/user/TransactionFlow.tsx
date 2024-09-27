@@ -16,7 +16,7 @@ interface TreeNode {
 }
 
 const TransactionFlow: React.FC = () => {
-  const { budget, isLoading : loadingBudget } = useBudget();
+  const { budget, isLoading: loadingBudget } = useBudget();
   const { isLoading, user } = useUser();
   const [orgChart, setOrgChart] = useState<TreeNode | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +27,7 @@ const TransactionFlow: React.FC = () => {
     depth: number,
     visited: Set<string>,
   ): Promise<TreeNode> => {
-    const { to } = transaction;
+    const { to, amount } = transaction;
 
     // Prevent infinite recursion by adding a depth limit
     if (depth > 10) {
@@ -41,7 +41,7 @@ const TransactionFlow: React.FC = () => {
     // Avoid circular references by checking if we've already visited this user
     if (visited.has(to.id)) {
       console.warn('Circular reference detected for user:', to.name);
-      return { name: `(Self)`, id: to.id };
+      return { name: ``, id: to.id };
     }
 
     visited.add(to.id); // Track the user we've visited
@@ -55,7 +55,7 @@ const TransactionFlow: React.FC = () => {
       name: to.name,
       id: to.id,
       attributes: {
-        Amount: Number(toUser?.balance),
+        Amount: Number(amount),
       },
       children: [],
     };
@@ -77,7 +77,6 @@ const TransactionFlow: React.FC = () => {
 
     return node;
   };
-  
 
   // Function to build the org chart from the root user's transactions
   const buildOrgChart = async (): Promise<TreeNode> => {
@@ -136,9 +135,9 @@ const TransactionFlow: React.FC = () => {
       <Tree
         data={orgChart}
         orientation="horizontal"
-        translate={{ x: 500, y: 100 }}
+        translate={{ x: 200, y: 100 }}
         nodeSize={{ x: 150, y: 200 }} // Adjust node size
-        separation={{ siblings: 2, nonSiblings: 2 }}
+        separation={{ siblings: 1, nonSiblings: 1 }}
       />
     </div>
   );

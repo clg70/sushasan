@@ -11,7 +11,7 @@ const Section: React.FC = () => {
   const { user, isLoading } = useUser();
   const { budget, isLoading: Loading } = useBudget();
   if (isLoading && Loading) return <div>Loading..</div>;
-  
+
   const filterTransaction = () => {
     let transactions: Transaction[] = [];
     user?.transactions.map((transaction) => {
@@ -21,6 +21,7 @@ const Section: React.FC = () => {
   };
 
   const transactions = filterTransaction();
+
   return (
     <div className="w-full bg-white rounded-lg">
       {/* Head */}
@@ -69,7 +70,11 @@ const Section: React.FC = () => {
       </div>
       <div className="p-12">
         <p className="pl-2 font-bold text-xl">Recent Transactions</p>
-        <Transactions allTransactions={[transactions[0], transactions[1]]} />
+        <Transactions
+          allTransactions={[
+            transactions[transactions.length - 1],
+          ]}
+        />
       </div>
     </div>
   );
