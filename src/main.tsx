@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
@@ -10,7 +9,7 @@ import UserContextProvider from './Providers/UserContext';
 import BudgetContextProvider from './Providers/BudgetContext';
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  
     <QueryClientProvider client={queryClient}>
       <AgentProvider withProcessEnv>
         <ActorProvider idlFactory={idlFactory} canisterId={canisterId}>
@@ -24,5 +23,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </ActorProvider>
       </AgentProvider>
     </QueryClientProvider>
-  </React.StrictMode>,
+  
 );

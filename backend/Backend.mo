@@ -2,6 +2,7 @@ import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
 import Iter "mo:base/Iter";
 import Int "mo:base/Int";
+import Debug "mo:base/Debug";
 import Types "Types";
 import User "mods/User";
 import Budget "mods/Budget";
@@ -13,6 +14,7 @@ actor class Backend() {
   let transactions = HashMap.HashMap<Text, Types.Transaction>(0, Text.equal, Text.hash);
   let properties = HashMap.HashMap<Text, Types.Property>(0, Text.equal, Text.hash);
   //Registering user
+  Debug.print(debug_show(""));
   public func register(username : Text, password : Text, name : Text, nid : Text, czid : Text, role : Text, createdAt : Text) : async Text {
     let newUser = await User.register(users, username, password, name, nid, czid, role, createdAt);
     switch (newUser) {

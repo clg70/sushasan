@@ -8,7 +8,7 @@ import useAuth from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 const Nav: React.FC<{
-  selected: 'dashboard' | 'budget' | 'transactions' | 'reports' | 'stats' | 'taxes' | 'properties';
+  selected: 'dashboard' | 'budget' | 'transactions' | 'reports' | 'stats' | 'taxes' | 'properties' ;
 }> = ({ selected }) => {
   useAuth();
   const { user } = useUser();
@@ -61,7 +61,7 @@ const Nav: React.FC<{
                 <PiMoneyWavyFill />
                 <p>Properties</p>
               </Link> :<Link
-                to="/account/budget"
+                to="/account/budgets"
                 className={`font-bold flex gap-1 items-center rounded-xl ${
                   selected == 'budget'
                     ? 'bg-slate-900 text-white'
@@ -71,7 +71,17 @@ const Nav: React.FC<{
                 <PiMoneyWavyFill />
                 <p>Budgets</p>
               </Link>}
-              
+              {user?.role=='tax' && <Link
+                to="/account/tax-billing"
+                className={`font-bold flex gap-1 items-center rounded-xl ${
+                    selected == 'taxes'
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-900'
+                } px-3 py-2`}
+              >
+                <FaWallet />
+                <p>Tax Billing</p>
+              </Link>}
               <Link
                 to="/account/transactions"
                 className={`font-bold flex gap-1 items-center rounded-xl ${

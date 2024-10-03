@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm i && dfx canister create backend && dfx generate backend && dfx deploy",
     "start": "run-p frontend backend",
-    "frontend": "vite --port 3000",
+    "frontend": "vite --port 3000 --host",
     "backend": "mo-dev --generate --deploy -y",
     "build": "tsc && vite build",
     "test": "run-s test:backend test:frontend",
@@ -38,7 +38,10 @@
     "react-icons": "^5.3.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.26.2",
+    "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"

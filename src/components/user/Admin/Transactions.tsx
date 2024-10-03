@@ -84,7 +84,7 @@ allTransactions.forEach((transaction) => {
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">TransactionID</TableHead>
+            <TableHead className="w-[200px] relative right-2">TransactionID</TableHead>
             <TableHead>From</TableHead>
             <TableHead>To</TableHead>
             <TableHead className="text-right">Amount</TableHead>
